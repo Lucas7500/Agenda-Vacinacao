@@ -62,4 +62,11 @@ public class UsuarioController {
         model.addAttribute("historico", historico);
         return "usuarios/historico";
     }
+
+    @PostMapping("/remover")
+    public String removerUsuario(@ModelAttribute("id") Integer id) {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        usuarioRepository.delete(usuario);
+        return "redirect:/usuarios";
+    }
 }

@@ -5,10 +5,7 @@ import com.agente.vacinacao.AgendaVacinacao.repositories.AlergiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/alergias")
@@ -29,4 +26,13 @@ public class AlergiaController {
         alergiaRepository.save(alergia);
         return "redirect:/alergias";
     }
+
+    @PostMapping("/remover")
+    public String removerAlergia(@ModelAttribute("id") Integer id) {
+        Alergia alergia = alergiaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Alergia não encontrada"));
+        alergiaRepository.delete(alergia);
+        return "redirect:/alergias";
+    }
+
 }

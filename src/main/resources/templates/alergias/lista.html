@@ -37,6 +37,13 @@
         <tr th:each="alergia : ${alergias}">
             <td th:text="${alergia.id}"></td>
             <td th:text="${alergia.nome}"></td>
+            <td>
+                <form th:action="@{/alergias/remover}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${alergia.id}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>

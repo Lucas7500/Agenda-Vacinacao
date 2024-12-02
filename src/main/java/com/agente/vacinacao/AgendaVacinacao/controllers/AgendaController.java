@@ -140,4 +140,13 @@ public class AgendaController {
         return "redirect:/agendas";
     }
 
+    @PostMapping("/remover")
+    public String removerAgenda(@ModelAttribute("id") Integer id) {
+        Agenda agenda = agendaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Agenda não encontrada"));
+        agendaRepository.delete(agenda);
+        return "redirect:/agendas";
+    }
+
+
 }

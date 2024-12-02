@@ -128,6 +128,12 @@
             <td>
                 <a th:href="@{/usuarios/{id}/historico(id=${usuario.id})}" class="btn btn-secondary btn-sm">Ver Histórico</a>
             </td>
+            <td>
+                <form th:action="@{/usuarios/remover}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${usuario.id}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

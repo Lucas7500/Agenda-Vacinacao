@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-6">
-          <label for="intervalo" class="form-label">Intervalo (em meses):</label>
+          <label for="intervalo" class="form-label">Intervalo:</label>
           <input type="number" id="intervalo" th:field="*{intervalo}" class="form-control" required>
         </div>
 
@@ -59,7 +59,7 @@
       <th>Descrição</th>
       <th>Doses</th>
       <th>Periodicidade</th>
-      <th>Intervalo (meses)</th>
+      <th>Intervalo</th>
     </tr>
     </thead>
     <tbody>
@@ -70,6 +70,12 @@
       <td th:text="${vacina.doses}"></td>
       <td th:text="${vacina.periodicidade.descricao}"></td>
       <td th:text="${vacina.intervalo}"></td>
+      <td>
+        <form th:action="@{/vacinas/remover}" method="post" class="d-inline">
+          <input type="hidden" name="id" th:value="${vacina.id}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
+        </form>
+      </td>
     </tr>
     </tbody>
   </table>

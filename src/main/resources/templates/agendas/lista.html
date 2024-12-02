@@ -114,6 +114,12 @@
           <button type="submit" class="btn btn-danger btn-sm">Cancelado</button>
         </form>
       </td>
+      <td>
+        <form th:action="@{/agendas/remover}" method="post" class="d-inline">
+          <input type="hidden" name="id" th:value="${agenda.id}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">Remover</button>
+        </form>
+      </td>
 
     </tr>
     </tbody>
