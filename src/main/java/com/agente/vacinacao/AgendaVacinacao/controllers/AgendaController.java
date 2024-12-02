@@ -2,18 +2,16 @@ package com.agente.vacinacao.AgendaVacinacao.controllers;
 
 import com.agente.vacinacao.AgendaVacinacao.enums.SituacaoAgenda;
 import com.agente.vacinacao.AgendaVacinacao.models.Agenda;
+import com.agente.vacinacao.AgendaVacinacao.models.HistoricoVacinacao;
 import com.agente.vacinacao.AgendaVacinacao.models.Vacina;
 import com.agente.vacinacao.AgendaVacinacao.repositories.AgendaRepository;
+import com.agente.vacinacao.AgendaVacinacao.repositories.HistoricoVacinacaoRepository;
 import com.agente.vacinacao.AgendaVacinacao.repositories.UsuarioRepository;
 import com.agente.vacinacao.AgendaVacinacao.repositories.VacinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,6 +30,9 @@ public class AgendaController {
 
     @Autowired
     private VacinaRepository vacinaRepository;
+
+    @Autowired
+    private HistoricoVacinacaoRepository historicoVacinacaoRepository;
 
     @GetMapping
     public String listarAgendas(
@@ -119,7 +120,18 @@ public class AgendaController {
         Agenda agenda = agendaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Agenda não encontrada"));
 
-        if (situacao == SituacaoAgenda.CANCELADO || situacao == SituacaoAgenda.REALIZADO) {
+        if (situacao == SituacaoAgenda.REALIZADO) {
+            agenda.setSituacao(situacao);
+            agenda.setDataSituacao(LocalDate.now());
+            agendaRepository.save(agenda);
+
+            HistoricoVacinacao historico = new HistoricoVacinacao();
+            historico.setUsuario(agenda.getUsuario());
+            historico.setVacina(agenda.getVacina());
+            historico.setDataAplicacao(agenda.getData());
+            historico.setObservacoes(agenda.getObservacoes());
+            historicoVacinacaoRepository.save(historico);
+        } else if (situacao == SituacaoAgenda.CANCELADO) {
             agenda.setSituacao(situacao);
             agenda.setDataSituacao(LocalDate.now());
             agendaRepository.save(agenda);

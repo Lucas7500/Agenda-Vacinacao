@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface VacinaRepository extends JpaRepository<Vacina, Integer> {
-    Optional<Vacina> findByTitulo(String titulo);
 }
