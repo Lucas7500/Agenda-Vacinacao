@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cadastro de Usuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Cadastro de Usuários</h1>
+
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <form th:action="@{/usuarios}" th:object="${novoUsuario}" method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <input type="text" id="nome" th:field="*{nome}" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="dataNascimento" class="form-label">Data de Nascimento:</label>
+                    <input type="date" id="dataNascimento" th:field="*{dataNascimento}" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="sexo" class="form-label">Sexo:</label>
+                    <select id="sexo" th:field="*{sexo}" class="form-select" required>
+                        <option th:each="sexo : ${sexos}" th:value="${sexo}" th:text="${sexo.descricao}"></option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="logradouro" class="form-label">Logradouro:</label>
+                    <input type="text" id="logradouro" th:field="*{logradouro}" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="numero" class="form-label">Número:</label>
+                    <input type="number" id="numero" th:field="*{numero}" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="setor" class="form-label">Setor:</label>
+                    <input type="text" id="setor" th:field="*{setor}" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="cidade" class="form-label">Cidade:</label>
+                    <input type="text" id="cidade" th:field="*{cidade}" class="form-control" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="uf" class="form-label">UF:</label>
+                    <select id="uf" th:field="*{uf}" class="form-select" required>
+                        <option value="">Selecione um estado</option>
+                        <option value="AC">Acre (AC)</option>
+                        <option value="AL">Alagoas (AL)</option>
+                        <option value="AP">Amapá (AP)</option>
+                        <option value="AM">Amazonas (AM)</option>
+                        <option value="BA">Bahia (BA)</option>
+                        <option value="CE">Ceará (CE)</option>
+                        <option value="DF">Distrito Federal (DF)</option>
+                        <option value="ES">Espírito Santo (ES)</option>
+                        <option value="GO">Goiás (GO)</option>
+                        <option value="MA">Maranhão (MA)</option>
+                        <option value="MT">Mato Grosso (MT)</option>
+                        <option value="MS">Mato Grosso do Sul (MS)</option>
+                        <option value="MG">Minas Gerais (MG)</option>
+                        <option value="PA">Pará (PA)</option>
+                        <option value="PB">Paraíba (PB)</option>
+                        <option value="PR">Paraná (PR)</option>
+                        <option value="PE">Pernambuco (PE)</option>
+                        <option value="PI">Piauí (PI)</option>
+                        <option value="RJ">Rio de Janeiro (RJ)</option>
+                        <option value="RN">Rio Grande do Norte (RN)</option>
+                        <option value="RS">Rio Grande do Sul (RS)</option>
+                        <option value="RO">Rondônia (RO)</option>
+                        <option value="RR">Roraima (RR)</option>
+                        <option value="SC">Santa Catarina (SC)</option>
+                        <option value="SP">São Paulo (SP)</option>
+                        <option value="SE">Sergipe (SE)</option>
+                        <option value="TO">Tocantins (TO)</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Alergias:</label>
+                    <div th:each="alergia : ${alergias}" class="form-check">
+                        <input type="checkbox" th:field="*{alergias}" th:value="${alergia.id}" class="form-check-input">
+                        <label th:text="${alergia.nome}" class="form-check-label"></label>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h2 class="text-center mb-4">Usuários Cadastrados</h2>
+    <table class="table table-striped table-hover shadow-sm">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>Sexo</th>
+            <th>Endereço</th>
+            <th>Alergias</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.nome}"></td>
+            <td th:text="${#temporals.format(usuario.dataNascimento, 'dd/MM/yyyy')}"></td>
+            <td th:text="${usuario.sexo.descricao}"></td>
+            <td th:text="${usuario.logradouro + ', ' + usuario.numero + ' - ' + usuario.setor + ', ' + usuario.cidade + ' - ' + usuario.uf}"></td>
+            <td>
+                <span th:each="alergia : ${usuario.alergias}" th:text="${alergia.nome} + ' '"></span>
+            </td>
+            <td>
+                <a th:href="@{/usuarios/{id}/agendamentos(id=${usuario.id})}" class="btn btn-info btn-sm">Ver Agendamentos</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -15,4 +15,8 @@ public enum Periodicidade {
     public int getValor() {
         return valor;
     }
+
+    public String getDescricao() {
+        return this.name();
+    }
 }

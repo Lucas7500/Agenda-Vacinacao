@@ -1,26 +1,16 @@
 package com.agente.vacinacao.AgendaVacinacao.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Sexo {
     M('M'),
     F('F');
 
-    private final char valor;
+    private final char descricao;
 
-    Sexo(char valor) {
-        this.valor = valor;
+    Sexo(char descricao) {
+        this.descricao = descricao;
     }
 
-    public char getValor() {
-        return valor;
-    }
-
-    public static Sexo fromChar(char valor) {
-        for (Sexo sexo : values()) {
-            if (sexo.valor == valor) {
-                return sexo;
-            }
-        }
-
-        throw new IllegalArgumentException("Sexo inválido");
-    }
 }
